@@ -1,0 +1,16 @@
+render-dragon
+poster-dragon-front
+fractal
+.sconsign.dblite
+*-smooth.exr
+*-mask.exr
+*-merged.exr
+*.png
+*.log
+*.aux
+*.fls
+*.nav
+*.out
+*.pdf
+*.snm
+*.toc

@@ -1,0 +1,8 @@
+# Prepare dragon front:
+./dragon.py --type dragon --level 19 --scale-level 17 --smooth 5 --corner-shift 0.05 --size 150 --thickness 0.025 --closed 0 --closed-base 1 --z-scale 0.5 --sharp-corners 0 --colorize 1 --instance 1 --border-crease 1 --ground 1 --settle-step 0.01 --mitsuba-dir poster-dragon-front --origin=-49.412825379531753,208.92850880962186,78.324132111435546 --target 1.8198107879612146,-9.5738105894434717,53.519032449873805 --rotation 0,-0.9999999984957032,5.4850649339629963e-05,0 --border-layers 8 --console 1 --two-ring 1
+
+# Low res dragon front
+./render-dragon --samples 512 --data poster-dragon-front --width 1280 --height 960 --color-seed 194514 --gui 1
+
+# Sharp dragon front
+./render-dragon --samples 512 --data poster-dragon-front --width 8000 --height 6000 --color-seed 194514 --mask 

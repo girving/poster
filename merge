@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+from __future__ import division
+from other.core import *
+from other.core.value import parser
+
+props = PropManager()
+name = props.add('name','').set_required(1)
+parser.parse(props,'Combine smooth and sharp images together using a mask',positional=[name])
+
+# Load images
+name = name()
+smooth = Image.read(name+'-smooth.exr')
+sharp = Image.read(name+'-sharp.exr')
+mask = Image.read(name+'-mask.exr')
+
+# Combine
+image = (1-mask)*smooth+mask*sharp
+
+# Write result
+Image.write(name+'-merged.exr',image)

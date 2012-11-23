@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+
+from __future__ import division
+from other.core import *
+from other.core.value import parser
+import scipy.misc
+import sys
+
+props = PropManager()
+input = props.add('input','').set_required(1)
+size = props.add('size',zeros(2)).set_required(1).set_abbrev('s')
+cutoff = props.add('cutoff',.1).set_abbrev('c')
+plot = props.add('plot',False)
+parser.parse(props,'Prepare an image for superresolution',positional=[input])
+
+# Load input
+input = input()
+assert input.endswith('.exr')
+image = Image.read(input)
+shape = image.shape
+print 'input: size %s, dtype %s'%(shape,image.dtype)
+
+# Sanitize size
+size = size().astype(int)
+assert any(size)
+for i in 0,1:
+  if not size[i]:
+    size[i] = size[1-i]*shape[i]/shape[1-i]
+assert all(size)
+assert size[0]*shape[1]==size[1]*shape[0]
+print 'output: size %s'%(tuple(size),)
+
+# Compute gradients in log space
+image = log(image+1e-10)
+grad = zeros(shape[:2])
+g = absolute(image[:,1:]-image[:,:-1]).max(axis=-1)
+grad[:,1:] = maximum(grad[:,1:],g)
+grad[:,:-1] = maximum(grad[:,:-1],g)
+g = absolute(image[1:,:]-image[:-1,:]).max(axis=-1)
+grad[1:,:] = maximum(grad[1:,:],g)
+grad[:-1,:] = maximum(grad[:-1,:],g)
+sg = sort(grad.ravel())[::-1]
+if plot():
+  import pylab
+  pylab.plot(arange(len(sg))/len(sg),sg)
+  pylab.xlim(0,.1)
+  pylab.xlabel('cutoff')
+  pylab.ylabel('gradient')
+  pylab.show()
+  sys.exit(0)
+low_mask = grad>sg[int(len(sg)*cutoff())]
+
+# Resize the mask
+high_mask = scipy.misc.imresize(low_mask.astype(float32),size,interp='bicubic',mode='F')>1e-3
+print 'mask fraction = %g'%(high_mask.sum()/product(high_mask.shape))
+high_mask = high_mask.repeat(3).astype(float).reshape(tuple(size)+(3,))
+Image.write(input[:-4]+'-mask.exr',high_mask)
+del high_mask
+
+# Resize the image
+smooth = empty(tuple(size)+(3,))
+for i in xrange(3):
+  smooth[:,:,i] = scipy.misc.imresize(image[:,:,i],size,interp='bicubic',mode='F')
+  print 'range %d: input %g %g, smooth %g %g'%(i,image[:,:,i].min(),image[:,:,i].max(),smooth[:,:,i].min(),smooth[:,:,i].max())
+smooth = exp(smooth)
+Image.write(input[:-4]+'-smooth.exr',smooth)

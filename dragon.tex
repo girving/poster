@@ -1,0 +1,28 @@
+\documentclass[final]{beamer}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath,amsthm,amssymb,latexsym,layout}
+\usepackage[absolute,overlay]{textpos}
+\usefonttheme[onlymath]{serif}
+\usepackage[size=custom,width=40.64,height=50.8,scale=1]{beamerposter} % 16 x 20 in
+%\usepackage[size=custom,width=40.64,height=75.184,scale=1]{beamerposter} % 16 x 29.6 in
+
+\newcommand{\nt}{\negthinspace}
+\newcommand{\m}{\nt-\nt}
+\newcommand{\p}{\nt+\nt}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{\vspace{0cm}}
+\setbeamersize{text margin left=0cm}
+\setlength{\topsep}{0pt}
+\setlength{\voffset}{0pt}
+\setlength{\TPHorizModule}{1in}
+\setlength{\TPVertModule}{1in}
+
+\begin{document}
+\begin{frame}{}
+\includegraphics[width=\paperwidth]{dragon-front-merged.png}
+\begin{textblock}{20}(8,19.5)
+Dragon curve: $\pi/2$, $FX$, $X\to X\m YF$, $Y\to FX\p Y$
+\end{textblock}
+\end{frame}
+\end{document}

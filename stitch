@@ -1,0 +1,86 @@
+#!/usr/bin/env python
+
+from __future__ import division
+from other.core import *
+from other.core.value import parser
+import scipy.misc
+import sys
+import re
+
+props = PropManager()
+inputs = props.add('inputs',None).set([]).set_required(1).set_hidden(1)
+size = props.add('size',zeros(2)).set_required(1).set_abbrev('s')
+tile_size = props.add('tile_size',1000)
+tile_overlap = props.add('tile_overlap',10)
+missing = props.add('missing','').set_abbrev('m')
+parser.parse(props,'Stitch several overlapping image tiles together',positional=[inputs])
+
+# Validate filenames and extract prefix
+prefix = None
+inputs = inputs()
+for name in inputs:
+  # Parse filename
+  m = re.match(r'^(.*)-(\d+)\.exr$',name)
+  if not m:
+    raise RuntimeError('weird input file %s'%name)
+  if prefix is None:
+    prefix = m.group(1) 
+  elif prefix!=m.group(1):
+    raise RuntimeError('prefix mismatch: %s vs. %s'%(prefix,m.group(1)))
+
+# Initialize empty image
+size = size().astype(int)
+assert all(size>0)
+large = zeros(tuple(size)+(4,))
+
+# Load background image
+if missing():
+  small = log(Image.read(missing()))
+  assert small.shape[0]*large.shape[1]==small.shape[1]*large.shape[0]
+  missing = empty(large.shape[:2]+(3,))
+  for i in xrange(3):
+    missing[:,:,i] = scipy.misc.imresize(small[:,:,i],large.shape[:2],interp='bicubic',mode='F')
+else:
+  # Default to red
+  missing = empty(large.shape[:2]+(3,))
+  missing[:] = (1,.1,.1)
+
+# Tile details
+tile_size = tile_size()
+overlap = tile_overlap()
+tiles = (size+tile_size-1)//tile_size
+
+# Load and place each tile
+for t0 in xrange(tiles[0]):
+  for t1 in xrange(tiles[1]):
+    name = '%s-%d.exr'%(prefix,t0*tiles[1]+t1)
+    t = array([t0,t1])
+    # Locate tile
+    lo = tile_size*t
+    hi = minimum(size,tile_size*(t+1))
+    lop = maximum(0,lo-overlap)
+    hip = minimum(size,hi+overlap)
+    # Read image tile
+    small = empty(tuple(hip-lop)+(4,))
+    if name in inputs:
+      small[:,:,:3] = log(Image.read(name)+1e-10)
+    else:
+      small[:,:,:3] = missing[lop[0]:hip[0],lop[1]:hip[1]]
+    # Construct alpha channel
+    box = 2*(lo-lop),hi-1-lop-(hip-hi)
+    center = (box[0]+box[1])/2
+    half = (box[1]-box[0])/2
+    scale = 1/(2*overlap+1)
+    alpha = small[:,:,3]
+    alpha[:] = ( minimum(1,1-scale*(absolute(arange(alpha.shape[0]).reshape(-1,1)-center[0])-half[0]))
+                *minimum(1,1-scale*(absolute(arange(alpha.shape[1]).reshape(1,-1)-center[1])-half[1])))
+    # Absorb image
+    small[:,:,:3] *= alpha[...,None]
+    large[lop[0]:hip[0],lop[1]:hip[1]] += small
+
+# Verify that we have partition of unity weights
+alpha = large[:,:,3]
+assert all(abs(alpha-1)<1e-4)
+
+# Write result
+Image.write('%s-merged.exr'%prefix,exp(large[:,:,:3]))
