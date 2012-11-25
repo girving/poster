@@ -1,0 +1,46 @@
+\documentclass[final]{beamer}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath,amsthm,amssymb,latexsym,layout}
+\usepackage[absolute,overlay]{textpos}
+\usepackage[size=custom,width=50.8,height=50.8,scale=1]{beamerposter} % 20 x 20 in
+
+\usefonttheme{serif}
+%\usefonttheme[onlymath]{serif}
+
+\newcommand{\nt}{\negthinspace}
+\newcommand{\m}{\nt-\nt}
+\newcommand{\p}{\nt+\nt}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{\vspace{0cm}}
+\setbeamersize{text margin left=0cm}
+\setlength{\topsep}{0pt}
+\setlength{\voffset}{0pt}
+\setlength{\TPHorizModule}{1in}
+\setlength{\TPVertModule}{1in}
+
+\setbeamercolor{background canvas}{bg=black}
+
+\begin{document}
+\begin{frame}{}
+\minipage[t][20in][t]{20in}
+  \begin{tabular}{@{}l@{\hspace{.008\paperwidth}}r@{}}
+  \includegraphics[width=.496\paperwidth]{gosper-back-merged.png} &
+  \includegraphics[width=.496\paperwidth]{gosper-front-merged.png}
+  \end{tabular}
+  \vfill
+  \begin{tabular}{@{}l@{\hspace{.008\paperwidth}}r@{}}
+  \includegraphics[width=.496\paperwidth]{gosper-other-merged.png} &
+  \includegraphics[width=.496\paperwidth]{gosper-side-merged.png}
+  \end{tabular}
+\endminipage
+\begin{textblock}{20}(10.5,19.2)
+Gosper curve: $\pi/3$, $FX$,
+{\small
+$\begin{aligned}
+X &\to X\p YF\p+YF\m FX\m-FXFX\m YF+ \\
+Y &\to -FX\p YFYF\p+YF\p FX\m-FX\m Y
+\end{aligned}$}
+\end{textblock}
+\end{frame}
+\end{document}

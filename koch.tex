@@ -1,0 +1,30 @@
+\documentclass[final]{beamer}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath,amsthm,amssymb,latexsym,layout}
+\usepackage[absolute,overlay]{textpos}
+\usepackage[size=custom,width=50.8,height=40.64,scale=1]{beamerposter} % 20 x 16 in
+%\usepackage[size=custom,width=50.8,height=50.8,scale=1]{beamerposter} % 20 x 20 in
+
+\usefonttheme{serif}
+%\usefonttheme[onlymath]{serif}
+
+\newcommand{\nt}{\negthinspace}
+\newcommand{\m}{\nt-\nt}
+\newcommand{\p}{\nt+\nt}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{\vspace{0cm}}
+\setbeamersize{text margin left=0cm}
+\setlength{\topsep}{0pt}
+\setlength{\voffset}{0pt}
+\setlength{\TPHorizModule}{1in}
+\setlength{\TPVertModule}{1in}
+
+\begin{document}
+\begin{frame}{}
+\includegraphics[width=\paperwidth]{koch-side-merged.png}
+\begin{textblock}{20}(11.65,15.5)
+Koch snowflake: $\pi/3$, $F\p+ F\p+ F$, $F\to F\m F\p+ F\m F$
+\end{textblock}
+\end{frame}
+\end{document}

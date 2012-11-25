@@ -6,3 +6,15 @@
 
 # Sharp dragon front
 ./render-dragon --samples 512 --data poster-dragon-front --width 8000 --height 6000 --color-seed 194514 --mask 
+
+# Koch side
+./dragon.py --type koch --level 8 --scale-level 6 --smooth 5 --colorize 1 --border-layers 8 --ground 1 --mitsuba-dir poster-koch-side --origin 0.22170089213766708,123.93437270853076,180.33272525228978 --target=-6.5876712447798162,-17.224156513626859,44.43756566063562 --rotation=1,0,0,0 --thickness .01 --rearrange 80,39 --two-ring 1 --console 1
+
+# Gosper front
+./dragon.py --type gosper --level 6 --scale-level 4 --smooth 5 --corner-shift 0.01 --thickness 0.3 --colorize 1 --border-layers 8 --ground 1 --origin=-37.548031375625783,174.33524984605464,94.06447355517362 --target 2.9977420980846889,-0.88814677571724876,21.815315250732041 --rotation=-5.4497675157361205e-09,-0.61958769628079802,0.78492744035194328,-5.7771780692661481e-09 --mitsuba-dir poster-gosper-front --console 1 --rearrange 388,494 --two-ring 1
+
+# Gosper back
+./dragon.py --type gosper --level 6 --scale-level 4 --smooth 5 --corner-shift 0.01 --thickness 0.3 --colorize 1 --border-layers 8 --ground 1 --origin=-37.548031375625783,174.33524984605464,94.06447355517362 --target 2.9977420980846889,-0.88814677571724876,21.815315250732041 --rotation 4.9634164601974635e-09,-0.9374474864151201,-0.3481267157429479,-1.0434993813479565e-08 --mitsuba-dir poster-gosper-back --console 1 --rearrange 388,494 --two-ring 1
+
+# Gosper side
+./dragon.py --type gosper --level 5 --scale-level 4 --smooth 5 --corner-shift 0.01 --thickness 0.29999999999999999 --colorize 1 --border-layers 8 --ground 1 --mitsuba-dir poster-gosper-side --origin 106.14852758526946,184.76928051872716,86.739813112730673 --target=-1.8413109040436795,8.757791108450121,17.952745587243811 --rotation 0.88225156371353819,-0.40498582943483014,0.019493838923558819,0.23924599584114714 --console 1 --two-ring 1

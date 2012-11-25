@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+from __future__ import division
+from other.core import *
+from other.core.value import parser
+
+props = PropManager()
+input = props.add('input','').set_required(1)
+output = props.add('output','').set_abbrev('o').set_required(1)
+size = props.add('size',40)
+parser.parse(props,'Fix one obvious image artifact',positional=[input])
+
+# Read input
+image = Image.read(input())
+sx,sy,_ = image.shape
+print 'shape = %d %d'%(sx,sy)
+
+# Find the artifact
+c = image.sum(axis=-1).argmax()
+cx,cy = c//sy,c%sy
+print 'center = %d %d'%(cx,cy)
+
+def lerp(t,a,b):
+  return (1-t)*a+t*b
+
+# Replace with black
+n = size()
+bx,by = cx-n,cy-n
+for i in xrange(1,2*n):
+  for j in xrange(1,2*n):
+    w = i,2*n-i,j,2*n-j
+    v = image[bx,by+j],image[bx+2*n,by+j],image[bx+i,by],image[bx+i,by+2*n]
+    image[bx+i,by+j] = (w[0]*v[0]+w[1]*v[1]+w[2]*v[2]+w[3]*v[3])/sum(w)
+
+# Write output
+Image.write(output(),image)
