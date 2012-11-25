@@ -28,7 +28,7 @@ n = size()
 bx,by = cx-n,cy-n
 for i in xrange(1,2*n):
   for j in xrange(1,2*n):
-    w = i,2*n-i,j,2*n-j
+    w = 2*n-i,i,2*n-j,j
     v = image[bx,by+j],image[bx+2*n,by+j],image[bx+i,by],image[bx+i,by+2*n]
     image[bx+i,by+j] = (w[0]*v[0]+w[1]*v[1]+w[2]*v[2]+w[3]*v[3])/sum(w)
 

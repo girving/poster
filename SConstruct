@@ -69,7 +69,7 @@ adaptive('koch-side',command='./render-dragon --view koch-side --data poster-koc
 pdf('koch')
 
 poster('gosper-front',key=.3,crop=(314,30,1325,1325),ratio=2)
-poster('gosper-side',key=.3,crop=(392,19,1231,1231),ratio=2)
+tonemap('gosper-side-merged',key=.3,crop=2*asarray((392,19,1231,1231)))
 poster('gosper-other',key=.3,crop=(344,41,1281,1281),ratio=2)
 poster('gosper-back',key=.3,crop=(402,39,1329,1329),ratio=2)
 for view in 'front back other side'.split():
