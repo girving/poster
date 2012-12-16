@@ -3,11 +3,12 @@
 \usepackage[latin1]{inputenc}
 \usepackage{amsmath,amsthm,amssymb,latexsym,layout}
 \usepackage[absolute,overlay]{textpos}
-\usepackage[size=custom,width=40.64,height=50.8,scale=1]{beamerposter} % 16 x 20 in
-%\usepackage[size=custom,width=40.64,height=75.184,scale=1]{beamerposter} % 16 x 29.6 in
+\usepackage[size=custom,width=40.64,height=50.8,scale=1.5]{beamerposter} % 16 x 20 in
 
 \usefonttheme{serif}
-%\usefonttheme[onlymath]{serif}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\linespread{1.05} % Palatino needs more leading (space between lines)
 
 \newcommand{\nt}{\negthinspace}
 \newcommand{\m}{\nt-\nt}
@@ -23,7 +24,8 @@
 \begin{document}
 \begin{frame}{}
 \includegraphics[width=\paperwidth]{dragon-front-merged.png}
-\begin{textblock}{20}(10.52,19.2)
+%\begin{textblock}{20}(10.52,19.2) % scale=1
+\begin{textblock}{20}(7.85,18.8) % scale=1.5
 Dragon curve: $\pi/2$, $FX$,
 {\small
 $\begin{aligned}

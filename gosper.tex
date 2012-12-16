@@ -3,10 +3,12 @@
 \usepackage[latin1]{inputenc}
 \usepackage{amsmath,amsthm,amssymb,latexsym,layout}
 \usepackage[absolute,overlay]{textpos}
-\usepackage[size=custom,width=50.8,height=50.8,scale=1]{beamerposter} % 20 x 20 in
+\usepackage[size=custom,width=50.8,height=50.8,scale=1.05]{beamerposter} % 20 x 20 in
 
 \usefonttheme{serif}
-%\usefonttheme[onlymath]{serif}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\linespread{1.05} % Palatino needs more leading (space between lines)
 
 \newcommand{\nt}{\negthinspace}
 \newcommand{\m}{\nt-\nt}
@@ -34,12 +36,12 @@
   \includegraphics[width=.496\paperwidth]{gosper-side-merged.png}
   \end{tabular}
 \endminipage
-\begin{textblock}{20}(10.5,19.2)
+\begin{textblock}{20}(10.45,19.15)
 Gosper curve: $\pi/3$, $FX$,
 {\small
 $\begin{aligned}
 X &\to X\p YF\p+YF\m FX\m-FXFX\m YF+ \\
-Y &\to -FX\p YF\hspace{3pt}YF\p+YF\p FX\m-FX\m Y
+Y &\to -FX\p YFYF\p+YF\p FX\m-FX\m Y
 \end{aligned}$}
 \end{textblock}
 \end{frame}
