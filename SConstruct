@@ -68,6 +68,10 @@ poster('koch-side',key=.4,crop=(100,90,1100,880),extend=200)
 adaptive('koch-side',command='./render-dragon --view koch-side --data poster-koch-side --samples 512 --color-seed 184853')
 pdf('koch')
 
+# Retina background friendly koch
+env.Command('koch-background-large.png','koch-side-merged.png',['./extend --extra 962,963,0,0 --transpose 1 $SOURCE -o $TARGET'])
+env.Command('koch-background-retina.png','koch-background-large.png',['convert -resize 2880x1800 $SOURCE $TARGET'])
+
 poster('gosper-front',key=.3,crop=(314,30,1325,1325),ratio=2)
 tonemap('gosper-side-merged',key=.3,crop=2*asarray((392,19,1231,1231)))
 poster('gosper-other',key=.3,crop=(344,41,1281,1281),ratio=2)

@@ -7,17 +7,31 @@ from geode.value import parser
 props = PropManager()
 input = props.add('input','').set_required(1)
 output = props.add('output','').set_abbrev('o').set_required(1)
-extra = props.add('extra',100).set_abbrev('e').set_required(1)
-parser.parse(props,'Stitch several overlapping image tiles together',positional=[input])
+extra = props.add('extra','100').set_abbrev('e').set_required(1)
+sides = props.add('sides','b').set_abbrev('s').set_help('which sides to extend (lrtb for left,right,top,bottom)')
+transpose = props.add('transpose',False).set_help('transpose image')
+parser.parse(props,'Extend an image using constant extrapolation',positional=[input])
 
 # Read input
 small = Image.read(input())
+if transpose():
+  small = small.swapaxes(0,1).copy()
+
+# Parse extra
+if ',' in extra():
+  l,r,t,b = map(int,extra().split(','))
+else:
+  l = r = t = 0
+  b = int(extra())
 
 # Extend
-shape = small.shape
-large = zeros((shape[0],shape[1]+extra(),3))
-large[:,:shape[1]] = small
-large[:,shape[1]:] = small[:,-1].reshape(-1,1,3)
+x,y,_ = small.shape
+large = zeros((x+l+r,y+t+b,3))
+large[l:,t:][:x,:y] = small
+if l: large[:l  ,:] = small[ :1,:]
+if r: large[l+x:,:] = small[-1:,:]
+if t: large[:,  :t] = small[:, :1]
+if b: large[:,t+y:] = small[:,-1:]
 
 # Write output
 Image.write(output(),large)
